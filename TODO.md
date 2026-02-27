@@ -13,19 +13,20 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
 
 ## Modeles a comparer
 
-### Baselines (classiques)
+### Baselines (classiques + reference deep learning)
 | Modele | Description |
 |--------|-------------|
 | TF-IDF + Logistic Regression | Reference classique, interpretable |
 | TF-IDF + Linear SVM | Performant en haute dimension |
 | TF-IDF + Multinomial Naive Bayes | Baseline probabiliste simple |
+| BERT (bert-base-uncased) | Baseline deep learning de reference (2018) |
 
 ### Modeles recents (Transformers)
 | Modele | Description | Ref |
 |--------|-------------|-----|
-| BERT (bert-base-uncased) | Transformer de reference | arXiv 2018 |
 | DistilBERT (distilbert-base-uncased) | BERT distille, plus leger | arXiv 2019 |
-| ModernBERT | Architecture recente amelioree | arXiv 2024 |
+| ModernBERT (answerdotai/ModernBERT-base) | Encodeur moderne, 2T tokens, seq 8192 | arXiv Dec 2024 |
+| NeoBERT (neobert-base) | Next-gen BERT, 250M params, bat ModernBERT sur MTEB | arXiv Feb 2025 |
 
 ## Metriques
 - ROC-AUC (macro) -- metrique principale
@@ -64,14 +65,15 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
   - TF-IDF + Logistic Regression
   - TF-IDF + SVM
   - TF-IDF + Naive Bayes
+  - BERT (bert-base-uncased) fine-tune -- baseline deep learning
   - Evaluation sur test set
   - Sauvegarde des metriques et modeles
 
 ### Phase 5 -- Modeles recents
 - [ ] Notebook `02_transformers.ipynb`
-  - Fine-tuning BERT
   - Fine-tuning DistilBERT
   - Fine-tuning ModernBERT
+  - Fine-tuning NeoBERT
   - Evaluation sur test set
   - Sauvegarde des metriques et modeles
 

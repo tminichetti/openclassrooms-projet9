@@ -9,11 +9,12 @@ Classification multi-label de commentaires toxiques sur Wikipedia, en comparant 
 - **TF-IDF + Logistic Regression (OneVsRest)** : reference classique, rapide, interpretable.
 - **TF-IDF + Linear SVM (OneVsRest)** : performant sur les taches de classification de texte a haute dimension.
 - **TF-IDF + Multinomial Naive Bayes (OneVsRest)** : baseline probabiliste simple, souvent efficace en NLP.
+- **BERT (bert-base-uncased)** : modele Transformer de reference (2018), sert de baseline "deep learning" pour mesurer l'apport des modeles plus recents.
 
 ### Modeles recents
-- **BERT (bert-base-uncased)** : modele transformer de reference pour le NLP, pre-entraine sur un large corpus. Date de 2018 mais reste une reference incontournable.
 - **DistilBERT (distilbert-base-uncased)** : version distillee de BERT, 40% plus legere, 60% plus rapide, avec ~97% des performances. Permet d'evaluer le compromis performance/cout.
-- **ModernBERT** : modele transformer recent (arXiv, 18/12/2024) avec des ameliorations architecturales. Conforme au critere "moins de 5 ans" de la mission.
+- **ModernBERT (answerdotai/ModernBERT-base)** : encodeur bidirectionnel moderne (arXiv, 18/12/2024), entraine sur 2T tokens, sequence native 8192, SOTA sur classification et retrieval. Conforme au critere "moins de 2 ans".
+- **NeoBERT (neobert-base)** : encodeur "next-gen" (arXiv, 26/02/2025), 250M params, contexte 4096, bat ModernBERT sur le benchmark MTEB. Le plus recent des trois.
 
 ### Pourquoi cette approche multi-modeles
 - Comparer plusieurs baselines et plusieurs modeles recents donne une vision plus riche et credible.
@@ -39,9 +40,10 @@ Classification multi-label de commentaires toxiques sur Wikipedia, en comparant 
 ## 4) References bibliographiques
 1. **BERT** (Devlin et al., 2018) : https://arxiv.org/abs/1810.04805
 2. **DistilBERT** (Sanh et al., 2019) : https://arxiv.org/abs/1910.01108
-3. **ModernBERT** (arXiv, 2024) : https://arxiv.org/abs/2412.13663
-4. **Jigsaw Toxic Comment Challenge** (Kaggle) : https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
-5. **scikit-learn documentation** : https://scikit-learn.org/stable/
+3. **ModernBERT** (Warner et al., 2024) : https://arxiv.org/abs/2412.13663
+4. **NeoBERT** (Le Breton et al., 2025) : https://arxiv.org/abs/2502.19587
+5. **Jigsaw Toxic Comment Challenge** (Kaggle) : https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
+6. **scikit-learn documentation** : https://scikit-learn.org/stable/
 
 ## 5) Demarche de test (preuve de concept)
 
@@ -51,8 +53,8 @@ Demontrer que les modeles Transformers recents ameliorent la performance de clas
 ### Protocole de comparaison
 1. Charger et nettoyer le dataset (textes + 6 labels binaires).
 2. Construire un split reproductible : train fourni -> 80% train / 20% validation ; test fourni (en excluant les lignes avec label = -1).
-3. Entrainer les 3 baselines TF-IDF sur train, evaluer sur validation et test.
-4. Fine-tuner les 3 modeles Transformers sur train/validation, evaluer sur test.
+3. Entrainer les 4 baselines (3 TF-IDF + BERT) sur train, evaluer sur validation et test.
+4. Fine-tuner les 3 modeles recents (DistilBERT, ModernBERT, NeoBERT) sur train/validation, evaluer sur test.
 5. Comparer tous les modeles sur le meme jeu de test avec les memes metriques.
 
 ### Metriques prevues

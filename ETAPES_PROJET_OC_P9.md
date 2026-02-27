@@ -7,9 +7,9 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
   - ~160 000 commentaires Wikipedia annotes par des humains
   - 6 labels de toxicite (multi-label) : `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`
   - Fichiers : `train.csv`, `test.csv`, `test_labels.csv`, `sample_submission.csv`
-- **Baselines (modeles classiques)** : TF-IDF + Logistic Regression, TF-IDF + SVM, TF-IDF + Naive Bayes
-- **Modeles recents** : BERT, DistilBERT, ModernBERT (fine-tuning)
-- Critere de conformite : modeles recents (moins de 5 ans).
+- **Baselines (modeles classiques + reference deep learning)** : TF-IDF + Logistic Regression, TF-IDF + SVM, TF-IDF + Naive Bayes, BERT (bert-base-uncased)
+- **Modeles recents** : DistilBERT, ModernBERT (dec 2024), NeoBERT (feb 2025)
+- Critere de conformite : modeles recents (moins de 2 ans pour ModernBERT et NeoBERT).
 
 ## 2. Rediger le plan previsionnel (1 page)
 - Decrire les modeles recents et les raisons du choix.
@@ -42,12 +42,13 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
 - Pipeline 1 : TF-IDF + Logistic Regression (OneVsRest)
 - Pipeline 2 : TF-IDF + Linear SVM (OneVsRest)
 - Pipeline 3 : TF-IDF + Multinomial Naive Bayes (OneVsRest)
+- Pipeline 4 : BERT (bert-base-uncased) fine-tune -- baseline deep learning de reference
 - Entrainer sur train, evaluer sur test, sauvegarder les resultats.
 
 ## 8. Implementer les modeles recents
-- Modele 1 : BERT (bert-base-uncased) fine-tune
-- Modele 2 : DistilBERT (distilbert-base-uncased) fine-tune
-- Modele 3 : ModernBERT fine-tune
+- Modele 1 : DistilBERT (distilbert-base-uncased) fine-tune
+- Modele 2 : ModernBERT (answerdotai/ModernBERT-base) fine-tune -- dec 2024
+- Modele 3 : NeoBERT fine-tune -- feb 2025
 - Tokeniser les textes, fine-tuner sur train/validation, evaluer sur test avec les memes metriques.
 
 ## 9. Comparer baselines vs modeles recents
@@ -58,7 +59,7 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
 
 ## 10. Rediger la note methodologique (max 10 pages)
 - Expliquer la demarche, les choix techniques et la reproductibilite.
-- Expliquer le fonctionnement des modeles recents (architecture Transformer, BERT, ModernBERT).
+- Expliquer le fonctionnement des modeles recents (architecture Transformer, ModernBERT, NeoBERT).
 - Presenter les resultats compares et les limites.
 - Livrable attendu : PDF de la note methodologique.
 

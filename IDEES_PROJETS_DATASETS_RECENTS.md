@@ -6,7 +6,7 @@ Ce fichier archive les pistes evaluees avant de fixer le choix final.
 
 | # | Domaine | Dataset | Modele recent | Baseline | Statut |
 |---|---------|---------|---------------|----------|--------|
-| 1 | NLP - Toxicite | Jigsaw Toxic Comment (Kaggle) | BERT, DistilBERT, ModernBERT | TF-IDF + LogReg/SVM/NB | **RETENU** |
+| 1 | NLP - Toxicite | Jigsaw Toxic Comment (Kaggle) | DistilBERT, ModernBERT, NeoBERT | TF-IDF + LogReg/SVM/NB + BERT | **RETENU** |
 | 2 | NLP - Abstracts | Inflation Research Abstracts (UCI) | ModernBERT | TF-IDF + LogReg | Ecarte |
 | 3 | Tabulaire sante | Drug Induced Autoimmunity (UCI) | TabM | XGBoost / RandomForest | Ecarte |
 | 4 | Cybersecurite | PhiUSIIL Phishing URL (UCI) | TabM | XGBoost | Ecarte |
@@ -22,5 +22,6 @@ Ce fichier archive les pistes evaluees avant de fixer le choix final.
 - [BERT (arXiv)](https://arxiv.org/abs/1810.04805)
 - [DistilBERT (arXiv)](https://arxiv.org/abs/1910.01108)
 - [ModernBERT (arXiv)](https://arxiv.org/abs/2412.13663)
+- [NeoBERT (arXiv)](https://arxiv.org/abs/2502.19587)
 - [TabM (arXiv)](https://arxiv.org/abs/2410.24210)
 - [Chronos-2 (arXiv)](https://arxiv.org/abs/2510.15821)
