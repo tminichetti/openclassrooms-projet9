@@ -1,0 +1,47 @@
+# Requirements PC fixe (NVIDIA GPU + CUDA)
+# pip install -r requirements-pc.txt
+
+# --- Data & core ---
+pandas>=2.2
+numpy>=1.26
+pyarrow>=17.0
+joblib>=1.4
+
+# --- ML classique ---
+scikit-learn>=1.5
+
+# --- Deep learning (TensorFlow + CUDA) ---
+tensorflow[and-cuda]>=2.18
+
+# --- Deep learning (PyTorch + CUDA) ---
+torch>=2.5
+torchvision>=0.20
+torchaudio>=2.5
+
+# --- NLP / Transformers ---
+transformers>=4.47
+datasets>=3.1
+tokenizers>=0.21
+evaluate>=0.4
+accelerate>=1.2
+
+# --- Visualisation ---
+matplotlib>=3.9
+seaborn>=0.13
+plotly>=5.24
+wordcloud>=1.9
+
+# --- NLP utils ---
+nltk>=3.9
+
+# --- Notebooks ---
+jupyterlab>=4.2
+ipykernel>=6.29
+ipywidgets>=8.1
+
+# --- Dashboard ---
+streamlit>=1.40
+altair>=5.4
+
+# --- Interpretabilite ---
+captum>=0.7
