@@ -1,85 +1,91 @@
-# Étapes à suivre — Projet OpenClassrooms (preuve de concept ML)
+# Etapes a suivre -- Projet OpenClassrooms (preuve de concept ML)
 
-Objectif global : démontrer qu'un modèle récent est plus performant qu'une baseline sur un dataset choisi, puis présenter la preuve dans un notebook, une note méthodologique et un dashboard.
+Objectif global : demontrer qu'un modele recent est plus performant qu'une baseline sur le dataset Jigsaw Toxic Comment Classification Challenge (Kaggle), puis presenter la preuve dans un notebook, une note methodologique et un dashboard.
 
-## 1. Confirmer le sujet final
-- Choisir le trio final : dataset, baseline, nouveau modèle.
-- Sujet recommandé ici : Inflation Research Abstracts (UCI) + baseline TF-IDF/Logistic Regression + ModernBERT.
-- Critère de conformité : modèle récent (moins de 5 ans dans la mission, ici moins de 2 ans).
+## 1. Sujet retenu
+- **Dataset** : Jigsaw Toxic Comment Classification Challenge (Kaggle)
+  - ~160 000 commentaires Wikipedia annotes par des humains
+  - 6 labels de toxicite (multi-label) : `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`
+  - Fichiers : `train.csv`, `test.csv`, `test_labels.csv`, `sample_submission.csv`
+- **Baselines (modeles classiques)** : TF-IDF + Logistic Regression, TF-IDF + SVM, TF-IDF + Naive Bayes
+- **Modeles recents** : BERT, DistilBERT, ModernBERT (fine-tuning)
+- Critere de conformite : modeles recents (moins de 5 ans).
 
-## 2. Rédiger le plan prévisionnel (1 page)
-- Décrire le modèle récent et les raisons du choix.
-- Décrire le dataset retenu.
-- Ajouter 2-3 références bibliographiques fiables.
-- Décrire la démarche de test (protocole de comparaison baseline vs nouveau modèle).
-- Livrable attendu : PDF du plan prévisionnel.
+## 2. Rediger le plan previsionnel (1 page)
+- Decrire les modeles recents et les raisons du choix.
+- Decrire le dataset retenu.
+- Ajouter 2-3 references bibliographiques fiables.
+- Decrire la demarche de test (protocole de comparaison baselines vs modeles recents).
+- Livrable attendu : PDF du plan previsionnel.
 
 ## 3. Valider le plan avec le mentor
 - Soumettre le plan.
 - Noter les retours.
-- Ajuster le protocole si demandé avant de coder la POC.
+- Ajuster le protocole si demande avant de coder la POC.
 
-## 4. Préparer l'environnement de travail
-- Créer un environnement Python dédié.
-- Installer les dépendances utiles (pandas, scikit-learn, transformers, datasets, torch, evaluate, matplotlib/seaborn, streamlit).
-- Organiser le dossier projet (data, notebooks, src, dashboard, reports, slides).
+## 4. Preparer l'environnement de travail
+- Creer un environnement Python dedie.
+- Installer les dependances (pandas, scikit-learn, transformers, datasets, torch, evaluate, matplotlib/seaborn, streamlit).
+- Organiser le dossier projet (data, notebooks, src, dashboard, reports, artifacts).
 
 ## 5. Charger et explorer le dataset
-- Télécharger et versionner localement le dataset.
-- Vérifier les colonnes, la qualité des textes, la répartition des classes, les valeurs manquantes/doublons.
-- Faire une mini EDA orientée modélisation (longueur des textes, distribution labels).
+- Dezipper les fichiers Jigsaw dans `data/raw/`.
+- Verifier les colonnes, la qualite des textes, la repartition des labels.
+- Faire une EDA orientee modelisation (longueur des textes, distribution des labels, co-occurrence des labels, desequilibre de classes).
 
-## 6. Définir un protocole d'évaluation strict
-- Fixer les métriques : Accuracy, Macro-F1, Precision, Recall (et éventuellement temps d'entraînement/inférence).
-- Fixer le split (train/validation/test) de façon identique pour les deux modèles.
-- Fixer la reproductibilité (seed, même prétraitement logique, mêmes données).
+## 6. Definir un protocole d'evaluation strict
+- **Metriques** : ROC-AUC (macro), F1-score (macro), Precision, Recall, Hamming Loss, temps d'entrainement et d'inference.
+- **Split** : utiliser le split train/test fourni par Kaggle + creer un split validation depuis train.
+- **Reproductibilite** : seed fixe, meme preprocessing logique, memes donnees pour tous les modeles.
 
-## 7. Implémenter la baseline
-- Construire pipeline baseline : TF-IDF + Logistic Regression.
-- Entraîner sur train, régler quelques hyperparamètres simples sur validation.
-- Évaluer sur test et sauvegarder les résultats.
+## 7. Implementer les baselines
+- Pipeline 1 : TF-IDF + Logistic Regression (OneVsRest)
+- Pipeline 2 : TF-IDF + Linear SVM (OneVsRest)
+- Pipeline 3 : TF-IDF + Multinomial Naive Bayes (OneVsRest)
+- Entrainer sur train, evaluer sur test, sauvegarder les resultats.
 
-## 8. Implémenter le nouveau modèle (ModernBERT)
-- Tokeniser les textes avec le tokenizer ModernBERT.
-- Fine-tuner le modèle sur train/validation.
-- Évaluer sur test avec les mêmes métriques.
-- Sauvegarder les résultats et les paramètres d'entraînement.
+## 8. Implementer les modeles recents
+- Modele 1 : BERT (bert-base-uncased) fine-tune
+- Modele 2 : DistilBERT (distilbert-base-uncased) fine-tune
+- Modele 3 : ModernBERT fine-tune
+- Tokeniser les textes, fine-tuner sur train/validation, evaluer sur test avec les memes metriques.
 
-## 9. Comparer baseline vs modèle récent
-- Faire un tableau de comparaison des métriques.
-- Ajouter une matrice de confusion et une analyse d'erreurs.
-- Conclure clairement : gain, perte, stabilité, coût de calcul.
+## 9. Comparer baselines vs modeles recents
+- Tableau de comparaison de toutes les metriques.
+- Analyse par label (certains labels sont tres rares : `threat`, `identity_hate`).
+- Matrice de confusion par label.
+- Conclure : gain, perte, stabilite, cout de calcul.
 
-## 10. Rédiger la note méthodologique (max 10 pages)
-- Expliquer la démarche, les choix techniques et la reproductibilité.
-- Expliquer le fonctionnement du nouveau modèle (ModernBERT) et son apport.
-- Présenter les résultats comparés et les limites.
-- Livrable attendu : PDF de la note méthodologique.
+## 10. Rediger la note methodologique (max 10 pages)
+- Expliquer la demarche, les choix techniques et la reproductibilite.
+- Expliquer le fonctionnement des modeles recents (architecture Transformer, BERT, ModernBERT).
+- Presenter les resultats compares et les limites.
+- Livrable attendu : PDF de la note methodologique.
 
 ## 11. Construire le dashboard
-- Créer une app Streamlit.
-- Montrer des prédictions sur exemples texte.
-- Montrer les métriques comparées baseline vs nouveau modèle.
-- Ajouter une section "Conclusion" claire pour la démonstration.
+- Creer une app Streamlit.
+- Section 1 : EDA interactive (distribution des labels, wordclouds, etc.)
+- Section 2 : Prediction de toxicite sur un texte saisi par l'utilisateur.
+- Section 3 : Comparaison des metriques entre tous les modeles.
 
-## 12. Déployer le dashboard sur le cloud
-- Déployer (exemple : Streamlit Community Cloud).
-- Vérifier que l'application est accessible et stable.
+## 12. Deployer le dashboard sur le cloud
+- Deployer sur Streamlit Community Cloud.
+- Verifier que l'application est accessible et stable.
 - Conserver l'URL publique pour la soutenance.
 
-## 13. Préparer les slides de soutenance (max 30 slides)
-- Bloc 1 (5 min) : dataset, modèle, sources, plan.
-- Bloc 2 (10 min) : démarche, concepts du nouveau modèle, résultats comparés.
-- Bloc 3 (5 min) : démonstration dashboard.
-- Préparer réponses aux questions (risques, biais, limites, coûts).
+## 13. Preparer les slides de soutenance (max 30 slides)
+- Bloc 1 (5 min) : dataset, modeles, sources, plan.
+- Bloc 2 (10 min) : demarche, concepts des modeles recents, resultats compares.
+- Bloc 3 (5 min) : demonstration dashboard.
+- Preparer reponses aux questions (risques, biais, limites, couts).
 
-## 14. Préparer le dépôt final des livrables
-- Générer et nommer les fichiers selon le format demandé.
-- Créer le zip final "Titre_du_projet_nom_prénom".
-- Vérifier la présence de tous les livrables : plan, notebook, note méthodo, code dashboard, lien déploiement, slides PDF.
+## 14. Preparer le depot final des livrables
+- Generer et nommer les fichiers selon le format demande.
+- Creer le zip final "Titre_du_projet_nom_prenom".
+- Verifier la presence de tous les livrables : plan, notebook, note methodo, code dashboard, lien deploiement, slides PDF.
 
-## Critères de réussite minimaux
-- Le notebook contient bien baseline et nouveau modèle comparés dans un même document.
-- Le modèle récent est justifié par des sources de qualité.
-- Les métriques montrent une comparaison claire et interprétable.
+## Criteres de reussite minimaux
+- Le notebook contient bien baselines et modeles recents compares dans un meme document.
+- Les modeles recents sont justifies par des sources de qualite.
+- Les metriques montrent une comparaison claire et interpretable.
 - Le dashboard fonctionne en cloud et illustre la preuve de concept.

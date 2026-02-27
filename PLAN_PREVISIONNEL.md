@@ -1,60 +1,70 @@
-# Plan prévisionnel — Preuve de concept
+# Plan previsionnel -- Preuve de concept
 
 ## 1) Sujet retenu
-Amélioration d'un modèle de classification de textes académiques sur l'inflation en comparant une baseline classique à un modèle NLP récent.
+Classification multi-label de commentaires toxiques sur Wikipedia, en comparant des baselines classiques a des modeles NLP recents (Transformers).
 
-## 2) Algorithme envisagé et justification
-Nouveau modèle envisagé : ModernBERT (publication arXiv du 18/12/2024).
+## 2) Algorithmes envisages et justification
 
-Arguments justifiant ce choix :
-- Modèle récent, conforme au cadre de la mission (moins de 5 ans ; ici moins de 2 ans).
-- Architecture pensée pour de bonnes performances NLP tout en restant exploitable en fine-tuning.
-- Pertinent pour une tâche de classification de textes, où une baseline bag-of-words atteint souvent ses limites.
+### Baselines (modeles classiques)
+- **TF-IDF + Logistic Regression (OneVsRest)** : reference classique, rapide, interpretable.
+- **TF-IDF + Linear SVM (OneVsRest)** : performant sur les taches de classification de texte a haute dimension.
+- **TF-IDF + Multinomial Naive Bayes (OneVsRest)** : baseline probabiliste simple, souvent efficace en NLP.
 
-Baseline de comparaison :
-- TF-IDF + Logistic Regression.
+### Modeles recents
+- **BERT (bert-base-uncased)** : modele transformer de reference pour le NLP, pre-entraine sur un large corpus. Date de 2018 mais reste une reference incontournable.
+- **DistilBERT (distilbert-base-uncased)** : version distillee de BERT, 40% plus legere, 60% plus rapide, avec ~97% des performances. Permet d'evaluer le compromis performance/cout.
+- **ModernBERT** : modele transformer recent (arXiv, 18/12/2024) avec des ameliorations architecturales. Conforme au critere "moins de 5 ans" de la mission.
 
-Pourquoi cette baseline :
-- Référence classique, simple, rapide à entraîner, très utilisée pour les tâches de classification de texte.
-- Permet une comparaison claire et pédagogique avec un modèle transformer moderne.
+### Pourquoi cette approche multi-modeles
+- Comparer plusieurs baselines et plusieurs modeles recents donne une vision plus riche et credible.
+- Permet d'analyser l'apport reel des Transformers vs methodes classiques, et les differences entre Transformers.
 
-## 3) Dataset retenu pour l'évaluation
-Dataset : Inflation Research Abstracts Classification (UCI), publié le 16/02/2025.
+## 3) Dataset retenu pour l'evaluation
+**Dataset** : Jigsaw Toxic Comment Classification Challenge (Kaggle)
 
-Lien officiel :
-- https://archive.ics.uci.edu/dataset/1125/inflation+research+abstracts+classification
+**Lien** : https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
 
-Raison du choix :
-- Jeu de données textuel aligné avec l'objectif de classification NLP.
-- Dataset récent et public, donc pertinent pour une preuve de concept académique.
+**Caracteristiques** :
+- ~160 000 commentaires Wikipedia annotes par des humains
+- 6 labels binaires (multi-label) : `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`
+- Split train/test fourni
+- Desequilibre de classes significatif (ex : `threat` et `identity_hate` tres rares)
 
-## 4) Références bibliographiques
-1. ModernBERT (arXiv, 2024) : https://arxiv.org/abs/2412.13663
-2. UCI Inflation Research Abstracts Dataset (2025) : https://archive.ics.uci.edu/dataset/1125/inflation+research+abstracts+classification
-3. Baseline TF-IDF / Logistic Regression (scikit-learn docs) : https://scikit-learn.org/stable/
+**Raison du choix** :
+- Dataset de reference en NLP pour la classification de texte.
+- Tache multi-label qui presente un defi realiste (desequilibre, co-occurrence de labels).
+- Grande taille permettant un entrainement fiable et une evaluation robuste.
+- Bien documente et largement utilise dans la communaute.
 
-## 5) Démarche de test (preuve de concept)
-Objectif de la POC :
-Démontrer que ModernBERT améliore la performance de classification par rapport à la baseline TF-IDF + Logistic Regression.
+## 4) References bibliographiques
+1. **BERT** (Devlin et al., 2018) : https://arxiv.org/abs/1810.04805
+2. **DistilBERT** (Sanh et al., 2019) : https://arxiv.org/abs/1910.01108
+3. **ModernBERT** (arXiv, 2024) : https://arxiv.org/abs/2412.13663
+4. **Jigsaw Toxic Comment Challenge** (Kaggle) : https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
+5. **scikit-learn documentation** : https://scikit-learn.org/stable/
 
-Protocole de comparaison :
-1. Charger et nettoyer le dataset (textes + labels).
-2. Construire un split reproductible train/validation/test identique pour les deux approches.
-3. Entraîner la baseline TF-IDF + Logistic Regression sur train ; ajuster les paramètres sur validation.
-4. Entraîner ModernBERT en fine-tuning sur train ; ajuster sur validation.
-5. Évaluer les deux modèles sur le même jeu de test final.
-6. Comparer les résultats avec les mêmes métriques.
+## 5) Demarche de test (preuve de concept)
 
-Métriques prévues :
-- Accuracy
-- Macro-F1 (métrique principale)
-- Precision
-- Recall
-- Temps d'entraînement et temps d'inférence (analyse coût/performance)
+### Objectif
+Demontrer que les modeles Transformers recents ameliorent la performance de classification multi-label de toxicite par rapport aux baselines classiques TF-IDF.
 
-Critère de succès :
-Le modèle ModernBERT doit présenter un gain mesurable sur Macro-F1 et/ou Recall par rapport à la baseline, avec une analyse claire du compromis performance/coût.
+### Protocole de comparaison
+1. Charger et nettoyer le dataset (textes + 6 labels binaires).
+2. Construire un split reproductible : train fourni -> 80% train / 20% validation ; test fourni (en excluant les lignes avec label = -1).
+3. Entrainer les 3 baselines TF-IDF sur train, evaluer sur validation et test.
+4. Fine-tuner les 3 modeles Transformers sur train/validation, evaluer sur test.
+5. Comparer tous les modeles sur le meme jeu de test avec les memes metriques.
 
-## 6) Réutilisation éventuelle de code externe
-Si du code de tutoriel est réutilisé (par exemple pipeline Hugging Face), la source sera citée explicitement dans le notebook et la note méthodologique.
-Le cas d'usage restera original car appliqué à ce dataset UCI spécifique.
+### Metriques prevues
+- **ROC-AUC (macro)** : metrique principale (standard Kaggle pour ce challenge)
+- **F1-score (macro)**
+- **Precision et Recall (macro)**
+- **Hamming Loss**
+- **Temps d'entrainement et d'inference** (analyse cout/performance)
+
+### Critere de succes
+Les modeles Transformers doivent presenter un gain mesurable sur ROC-AUC et/ou F1-score par rapport aux baselines, avec une analyse claire du compromis performance/cout.
+
+## 6) Reutilisation eventuelle de code externe
+Si du code de tutoriel est reutilise (par exemple pipeline Hugging Face), la source sera citee explicitement dans le notebook et la note methodologique.
+Le cas d'usage reste original car applique au dataset Jigsaw Toxic Comment avec une approche comparative multi-modeles.
