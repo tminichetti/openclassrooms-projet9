@@ -28,28 +28,43 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
 - Installer les dependances (pandas, scikit-learn, transformers, datasets, torch, evaluate, matplotlib/seaborn, streamlit).
 - Organiser le dossier projet (data, notebooks, src, dashboard, reports, artifacts).
 
-## 5. Charger et explorer le dataset
-- Dezipper les fichiers Jigsaw dans `data/raw/`.
-- Verifier les colonnes, la qualite des textes, la repartition des labels.
-- Faire une EDA orientee modelisation (longueur des textes, distribution des labels, co-occurrence des labels, desequilibre de classes).
+## 5. Explorer et nettoyer le dataset
+- Charger `train.csv` depuis `data/raw/`.
+- **Exploration** :
+  - Verifier les colonnes, types, valeurs manquantes, doublons.
+  - Distribution des 6 labels, co-occurrence entre labels.
+  - Longueur des commentaires (distribution, outliers).
+  - Desequilibre de classes (certaines categories tres rares).
+  - Wordclouds par categorie de toxicite.
+- **Nettoyage** :
+  - Suppression des doublons et lignes vides.
+  - Nettoyage du texte (HTML, caracteres speciaux, normalisation).
+  - Documentation des choix de nettoyage.
+- Sauvegarder le dataset nettoye dans `data/processed/`.
 
-## 6. Definir un protocole d'evaluation strict
+## 6. Splitter le dataset et definir le protocole d'evaluation
+- **Split** : decouper `train.csv` (nettoye) en 3 parties :
+  - **train** (70%) : entrainement des modeles
+  - **val** (15%) : validation / tuning des hyperparametres
+  - **test** (15%) : evaluation finale des modeles
+  - Split stratifie pour respecter la distribution des labels.
+  - Seed fixe pour la reproductibilite.
+- **test.csv Kaggle** : reserve et non utilise pendant l'entrainement. Utilise uniquement a la fin pour simuler une submission Kaggle (coherence avec le challenge).
 - **Metriques** : ROC-AUC (macro), F1-score (macro), Precision, Recall, Hamming Loss, temps d'entrainement et d'inference.
-- **Split** : utiliser le split train/test fourni par Kaggle + creer un split validation depuis train.
-- **Reproductibilite** : seed fixe, meme preprocessing logique, memes donnees pour tous les modeles.
+- **Reproductibilite** : seed fixe, meme preprocessing, memes splits pour tous les modeles.
 
 ## 7. Implementer les baselines
 - Pipeline 1 : TF-IDF + Logistic Regression (OneVsRest)
 - Pipeline 2 : TF-IDF + Linear SVM (OneVsRest)
 - Pipeline 3 : TF-IDF + Multinomial Naive Bayes (OneVsRest)
 - Pipeline 4 : BERT (bert-base-uncased) fine-tune -- baseline deep learning de reference
-- Entrainer sur train, evaluer sur test, sauvegarder les resultats.
+- Entrainer sur train, tuner sur val, evaluer sur test, sauvegarder les resultats.
 
 ## 8. Implementer les modeles recents
 - Modele 1 : DistilBERT (distilbert-base-uncased) fine-tune
 - Modele 2 : ModernBERT (answerdotai/ModernBERT-base) fine-tune -- dec 2024
 - Modele 3 : NeoBERT fine-tune -- feb 2025
-- Tokeniser les textes, fine-tuner sur train/validation, evaluer sur test avec les memes metriques.
+- Tokeniser les textes, fine-tuner sur train, tuner sur val, evaluer sur test avec les memes metriques.
 
 ## 9. Comparer baselines vs modeles recents
 - Tableau de comparaison de toutes les metriques.

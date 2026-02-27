@@ -28,7 +28,8 @@ Classification multi-label de commentaires toxiques sur Wikipedia, en comparant 
 **Caracteristiques** :
 - ~160 000 commentaires Wikipedia annotes par des humains
 - 6 labels binaires (multi-label) : `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`
-- Split train/test fourni
+- `train.csv` : donnees labelisees (sera splitte en train/val/test par nos soins)
+- `test.csv` : donnees sans labels, reserve pour simulation de submission Kaggle
 - Desequilibre de classes significatif (ex : `threat` et `identity_hate` tres rares)
 
 **Raison du choix** :
@@ -51,11 +52,16 @@ Classification multi-label de commentaires toxiques sur Wikipedia, en comparant 
 Demontrer que les modeles Transformers recents ameliorent la performance de classification multi-label de toxicite par rapport aux baselines classiques TF-IDF.
 
 ### Protocole de comparaison
-1. Charger et nettoyer le dataset (textes + 6 labels binaires).
-2. Construire un split reproductible : train fourni -> 80% train / 20% validation ; test fourni (en excluant les lignes avec label = -1).
-3. Entrainer les 4 baselines (3 TF-IDF + BERT) sur train, evaluer sur validation et test.
-4. Fine-tuner les 3 modeles recents (DistilBERT, ModernBERT, NeoBERT) sur train/validation, evaluer sur test.
-5. Comparer tous les modeles sur le meme jeu de test avec les memes metriques.
+1. **Explorer et nettoyer** le dataset : analyse qualite, doublons, texte vide, nettoyage HTML/caracteres speciaux.
+2. **Splitter `train.csv`** (nettoye) en 3 parties reproductibles (seed fixe, stratifie) :
+   - train (70%) : entrainement
+   - val (15%) : validation / hyperparametres
+   - test (15%) : evaluation finale
+3. **`test.csv` Kaggle** : reserve, non utilise pendant l'entrainement. Utilise uniquement a la fin pour simuler une submission coherente avec le challenge.
+4. Entrainer les 4 baselines (3 TF-IDF + BERT) sur train, tuner sur val, evaluer sur test.
+5. Fine-tuner les 3 modeles recents (DistilBERT, ModernBERT, NeoBERT) sur train, tuner sur val, evaluer sur test.
+6. Comparer tous les modeles sur le meme jeu de test avec les memes metriques.
+7. (Optionnel) Generer les predictions sur `test.csv` Kaggle au format submission.
 
 ### Metriques prevues
 - **ROC-AUC (macro)** : metrique principale (standard Kaggle pour ce challenge)

@@ -8,8 +8,11 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
 - **Source** : Kaggle - Jigsaw Toxic Comment Classification Challenge
 - **Taille** : ~160 000 commentaires Wikipedia
 - **Labels** (6, binaires, multi-label) : `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`
-- **Fichiers** : `train.csv`, `test.csv`, `test_labels.csv`, `sample_submission.csv`
-- **Localisation** : `data/raw/jigsaw-toxic-comment-classification-challenge/`
+- **Fichiers bruts** : `train.csv`, `test.csv`, `test_labels.csv`, `sample_submission.csv`
+- **Localisation** : `data/raw/`
+- **Strategie de split** :
+  - `train.csv` -> split en train (70%) / val (15%) / test (15%) -- stratifie, seed fixe
+  - `test.csv` Kaggle -> reserve pour simulation de submission finale (non utilise pendant l'entrainement)
 
 ## Modeles a comparer
 
@@ -46,19 +49,24 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
 - [ ] Creer le `requirements.txt`
 - [ ] Dezipper et preparer le dataset
 
-### Phase 2 -- EDA
-- [ ] Notebook `00_eda.ipynb` : exploration du dataset
-  - Distribution des labels
-  - Co-occurrence des labels
-  - Longueur des commentaires
+### Phase 2 -- Exploration et nettoyage
+- [ ] Notebook `00_exploration_nettoyage.ipynb`
+  - Chargement de `train.csv`
+  - Inspection : colonnes, types, valeurs manquantes, doublons
+  - Distribution des 6 labels, co-occurrence entre labels
+  - Longueur des commentaires (distribution, outliers)
   - Desequilibre de classes
-  - Wordclouds par categorie
+  - Wordclouds par categorie de toxicite
+  - Nettoyage : HTML, caracteres speciaux, doublons, lignes vides
+  - Sauvegarde du dataset nettoye
 
-### Phase 3 -- Preprocessing
+### Phase 3 -- Split et preprocessing
 - [ ] Script `src/preprocessing.py`
-  - Nettoyage de texte
-  - Split train/val/test
-  - Sauvegarde des datasets preprocesses
+  - Split de `train.csv` nettoye en train (70%) / val (15%) / test (15%)
+  - Split stratifie (respecte la distribution des labels)
+  - Seed fixe pour reproductibilite
+  - Sauvegarde dans `data/processed/` (train.csv, val.csv, test.csv)
+  - `test.csv` Kaggle non touche, reserve pour submission
 
 ### Phase 4 -- Baselines
 - [ ] Notebook `01_baselines.ipynb`
@@ -66,7 +74,7 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
   - TF-IDF + SVM
   - TF-IDF + Naive Bayes
   - BERT (bert-base-uncased) fine-tune -- baseline deep learning
-  - Evaluation sur test set
+  - Entrainement sur train, tuning sur val, evaluation sur test
   - Sauvegarde des metriques et modeles
 
 ### Phase 5 -- Modeles recents
@@ -74,7 +82,7 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
   - Fine-tuning DistilBERT
   - Fine-tuning ModernBERT
   - Fine-tuning NeoBERT
-  - Evaluation sur test set
+  - Entrainement sur train, tuning sur val, evaluation sur test
   - Sauvegarde des metriques et modeles
 
 ### Phase 6 -- Comparaison
@@ -84,6 +92,7 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
   - Matrices de confusion
   - Analyse cout/performance
   - Conclusion
+  - (Optionnel) Predictions sur test.csv Kaggle au format submission
 
 ### Phase 7 -- Dashboard
 - [ ] App Streamlit `dashboard/app.py`
@@ -106,7 +115,7 @@ openclassrooms-projet9/
     raw/                    # Dataset brut Jigsaw
     processed/              # Donnees nettoyees et splittees
   notebooks/
-    00_eda.ipynb
+    00_exploration_nettoyage.ipynb
     01_baselines.ipynb
     02_transformers.ipynb
     03_comparaison.ipynb
