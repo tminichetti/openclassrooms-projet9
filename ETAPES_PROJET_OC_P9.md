@@ -7,9 +7,9 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
   - ~160 000 commentaires Wikipedia annotes par des humains
   - 6 labels de toxicite (multi-label) : `toxic`, `severe_toxic`, `obscene`, `threat`, `insult`, `identity_hate`
   - Fichiers : `train.csv`, `test.csv`, `test_labels.csv`, `sample_submission.csv`
-- **Baselines (modeles classiques + reference deep learning)** : TF-IDF + Logistic Regression, TF-IDF + SVM, TF-IDF + Naive Bayes, BERT (bert-base-uncased)
-- **Modeles recents** : DistilBERT, ModernBERT (dec 2024), NeoBERT (feb 2025)
-- Critere de conformite : modeles recents (moins de 2 ans pour ModernBERT et NeoBERT).
+- **Baselines** : TF-IDF + Logistic Regression (classique), BERT (deep learning de reference)
+- **Modele recent** : ModernBERT (dec 2024)
+- Critere de conformite : ModernBERT date de moins de 5 ans (arXiv dec 2024).
 
 ## 2. Rediger le plan previsionnel (1 page) ✅
 - [x] Decrire les modeles recents et les raisons du choix.
@@ -59,21 +59,14 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
 ## 7. Implementer les baselines ✅ (execute sur machine GPU)
 - [x] Notebook `01_baselines.ipynb` -- execute sur GPU (CUDA)
 - [x] Pipeline 1 : TF-IDF + Logistic Regression (OneVsRest) -- ROC-AUC: 0.9786
-- [x] Pipeline 2 : TF-IDF + Linear SVM (OneVsRest) -- ROC-AUC: 0.9743
-- [x] Pipeline 3 : TF-IDF + Multinomial Naive Bayes (OneVsRest) -- ROC-AUC: 0.9611
-- [x] Pipeline 4 : BERT (bert-base-uncased) fine-tune -- ROC-AUC: 0.9878
+- [x] Pipeline 2 : BERT (bert-base-uncased) fine-tune -- ROC-AUC: 0.9878
 - **Metriques** : `artifacts/metrics/baselines_metrics.json`
-- **⚠️ Modeles a recuperer** : fichiers .joblib et bert_baseline/best/ depuis la machine GPU
+- **⚠️ Modeles a recuperer** : tfidf_vectorizer.joblib, baseline_tfidf_logreg.joblib et bert_baseline/best/ depuis la machine GPU
 
-## 8. Implementer les modeles recents ⏳ (2/3 termine)
-- Notebooks splites en 1 par modele :
-  - [x] `02a_distilbert.ipynb` -- execute sur GPU -- ROC-AUC: 0.9895
-  - [x] `02b_modernbert.ipynb` -- execute sur GPU -- ROC-AUC: 0.9911
-  - [ ] `02c_neobert.ipynb` -- **a relancer** (metriques non sauvegardees)
-- Ancien `02_transformers.ipynb` conserve comme reference
-- **Metriques** : `artifacts/metrics/transformers_metrics.json` (DistilBERT + ModernBERT)
-- **⚠️ Modeles a recuperer** : distilbert/best/, modernbert/best/, neobert/best/ depuis la machine GPU
-- **⚠️ A FAIRE** : relancer `02c_neobert.ipynb` pour obtenir les metriques NeoBERT
+## 8. Implementer le modele recent ✅ (execute sur machine GPU)
+- [x] `02b_modernbert.ipynb` -- execute sur GPU -- ROC-AUC: 0.9911
+- **Metriques** : `artifacts/metrics/transformers_metrics.json`
+- **⚠️ Modeles a recuperer** : modernbert/best/ depuis la machine GPU
 
 ## 9. Comparer baselines vs modeles recents ⏳ (pret a executer)
 - [x] Notebook `03_comparaison.ipynb` -- code complet
@@ -83,11 +76,11 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
   - Heatmap des metriques
   - Analyse cout/performance (scatter temps vs ROC-AUC)
   - Conclusion automatique
-- **⚠️ A EXECUTER** quand les metriques NeoBERT seront disponibles
+- **⚠️ A EXECUTER** avec les 3 modeles retenus
 
 ## 10. Rediger la note methodologique (max 10 pages) ❌ A FAIRE
 - [ ] Expliquer la demarche, les choix techniques et la reproductibilite.
-- [ ] Expliquer le fonctionnement des modeles recents (architecture Transformer, ModernBERT, NeoBERT).
+- [ ] Expliquer le fonctionnement du modele recent (architecture Transformer, ModernBERT).
 - [ ] Presenter les resultats compares et les limites.
 - Livrable attendu : PDF de la note methodologique.
 
@@ -121,9 +114,8 @@ Objectif global : demontrer qu'un modele recent est plus performant qu'une basel
 ---
 
 ## Blocages actuels
-1. **Modeles et metriques sur la machine GPU** : les fichiers .joblib, .safetensors et le JSON NeoBERT doivent etre recuperes
-2. **NeoBERT** : le notebook a ete execute mais la cellule de sauvegarde n'a pas tourne -- a relancer
-3. Tout le reste (comparaison, deploiement, livrables) depend de la recuperation des artifacts
+1. **Modeles sur la machine GPU** : les fichiers .joblib (TF-IDF, LogReg) et les dossiers bert_baseline/best/ et modernbert/best/ doivent etre recuperes
+2. Tout le reste (comparaison, deploiement, livrables) depend de la recuperation des artifacts
 
 ## Criteres de reussite minimaux
 - Le notebook contient bien baselines et modeles recents compares dans un meme document.

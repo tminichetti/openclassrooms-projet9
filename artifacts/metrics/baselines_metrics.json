@@ -10,26 +10,6 @@
     "inference_time_sec": 0.0435
   },
   {
-    "model": "TF-IDF + Linear SVM",
-    "roc_auc_macro": 0.974277,
-    "f1_macro": 0.571761,
-    "precision_macro": 0.770857,
-    "recall_macro": 0.466549,
-    "hamming_loss": 0.017881,
-    "train_time_sec": 13.27,
-    "inference_time_sec": 0.0947
-  },
-  {
-    "model": "TF-IDF + Naive Bayes",
-    "roc_auc_macro": 0.961069,
-    "f1_macro": 0.507784,
-    "precision_macro": 0.598385,
-    "recall_macro": 0.457258,
-    "hamming_loss": 0.021760,
-    "train_time_sec": 0.19,
-    "inference_time_sec": 0.0934
-  },
-  {
     "model": "BERT (bert-base-uncased)",
     "roc_auc_macro": 0.987772,
     "f1_macro": 0.696467,

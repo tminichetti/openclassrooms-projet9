@@ -5,20 +5,19 @@ Classification multi-label de commentaires toxiques sur Wikipedia, en comparant 
 
 ## 2) Algorithmes envisages et justification
 
-### Baselines (modeles classiques)
+### Baseline classique
 - **TF-IDF + Logistic Regression (OneVsRest)** : reference classique, rapide, interpretable.
-- **TF-IDF + Linear SVM (OneVsRest)** : performant sur les taches de classification de texte a haute dimension.
-- **TF-IDF + Multinomial Naive Bayes (OneVsRest)** : baseline probabiliste simple, souvent efficace en NLP.
+
+### Baseline deep learning
 - **BERT (bert-base-uncased)** : modele Transformer de reference (2018), sert de baseline "deep learning" pour mesurer l'apport des modeles plus recents.
 
-### Modeles recents
-- **DistilBERT (distilbert-base-uncased)** : version distillee de BERT, 40% plus legere, 60% plus rapide, avec ~97% des performances. Permet d'evaluer le compromis performance/cout.
-- **ModernBERT (answerdotai/ModernBERT-base)** : encodeur bidirectionnel moderne (arXiv, 18/12/2024), entraine sur 2T tokens, sequence native 8192, SOTA sur classification et retrieval. Conforme au critere "moins de 2 ans".
-- **NeoBERT (neobert-base)** : encodeur "next-gen" (arXiv, 26/02/2025), 250M params, contexte 4096, bat ModernBERT sur le benchmark MTEB. Le plus recent des trois.
+### Modele recent
+- **ModernBERT (answerdotai/ModernBERT-base)** : encodeur bidirectionnel moderne (arXiv, 18/12/2024), entraine sur 2T tokens, sequence native 8192, SOTA sur classification et retrieval. Conforme au critere "moins de 5 ans".
 
-### Pourquoi cette approche multi-modeles
-- Comparer plusieurs baselines et plusieurs modeles recents donne une vision plus riche et credible.
-- Permet d'analyser l'apport reel des Transformers vs methodes classiques, et les differences entre Transformers.
+### Pourquoi ces 3 modeles
+- TF-IDF + LogReg : baseline classique permettant de mesurer l'apport des Transformers.
+- BERT : baseline deep learning de reference, point de comparaison standard.
+- ModernBERT : architecture recente (dec 2024) permettant de demontrer le gain des avancees recentes.
 
 ## 3) Dataset retenu pour l'evaluation
 **Dataset** : Jigsaw Toxic Comment Classification Challenge (Kaggle)
@@ -40,11 +39,9 @@ Classification multi-label de commentaires toxiques sur Wikipedia, en comparant 
 
 ## 4) References bibliographiques
 1. **BERT** (Devlin et al., 2018) : https://arxiv.org/abs/1810.04805
-2. **DistilBERT** (Sanh et al., 2019) : https://arxiv.org/abs/1910.01108
-3. **ModernBERT** (Warner et al., 2024) : https://arxiv.org/abs/2412.13663
-4. **NeoBERT** (Le Breton et al., 2025) : https://arxiv.org/abs/2502.19587
-5. **Jigsaw Toxic Comment Challenge** (Kaggle) : https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
-6. **scikit-learn documentation** : https://scikit-learn.org/stable/
+2. **ModernBERT** (Warner et al., 2024) : https://arxiv.org/abs/2412.13663
+3. **Jigsaw Toxic Comment Challenge** (Kaggle) : https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge
+4. **scikit-learn documentation** : https://scikit-learn.org/stable/
 
 ## 5) Demarche de test (preuve de concept)
 
@@ -58,8 +55,8 @@ Demontrer que les modeles Transformers recents ameliorent la performance de clas
    - val (15%) : validation / hyperparametres
    - test (15%) : evaluation finale
 3. **`test.csv` Kaggle** : reserve, non utilise pendant l'entrainement. Utilise uniquement a la fin pour simuler une submission coherente avec le challenge.
-4. Entrainer les 4 baselines (3 TF-IDF + BERT) sur train, tuner sur val, evaluer sur test.
-5. Fine-tuner les 3 modeles recents (DistilBERT, ModernBERT, NeoBERT) sur train, tuner sur val, evaluer sur test.
+4. Entrainer les 2 baselines (TF-IDF LogReg + BERT) sur train, tuner sur val, evaluer sur test.
+5. Fine-tuner ModernBERT sur train, tuner sur val, evaluer sur test.
 6. Comparer tous les modeles sur le meme jeu de test avec les memes metriques.
 7. (Optionnel) Generer les predictions sur `test.csv` Kaggle au format submission.
 

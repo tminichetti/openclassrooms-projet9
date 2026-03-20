@@ -53,7 +53,7 @@ st.sidebar.markdown("---")
 st.sidebar.markdown(
     "**Projet** : Classification multi-label de commentaires toxiques\n\n"
     "**Dataset** : Jigsaw Toxic Comment (Kaggle)\n\n"
-    "**Modeles** : TF-IDF baselines + Transformers"
+    "**Modeles** : TF-IDF LogReg, BERT, ModernBERT"
 )
 
 
@@ -181,8 +181,6 @@ elif page == "Comparaison des modeles":
     # Type de modele
     baseline_names = [
         "TF-IDF + Logistic Regression",
-        "TF-IDF + Linear SVM",
-        "TF-IDF + Naive Bayes",
         "BERT (bert-base-uncased)",
     ]
     df["type"] = df["model"].apply(lambda x: "Baseline" if x in baseline_names else "Transformer recent")
@@ -329,10 +327,8 @@ elif page == "Prediction":
 
     # Check if a transformer model is available
     model_dirs = [
-        ("DistilBERT", BASE_DIR / "artifacts" / "models" / "distilbert" / "best"),
         ("BERT", BASE_DIR / "artifacts" / "models" / "bert_baseline" / "best"),
         ("ModernBERT", BASE_DIR / "artifacts" / "models" / "modernbert" / "best"),
-        ("NeoBERT", BASE_DIR / "artifacts" / "models" / "neobert" / "best"),
     ]
 
     available_models = []
