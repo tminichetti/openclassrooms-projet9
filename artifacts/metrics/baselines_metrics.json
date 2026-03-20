@@ -6,8 +6,8 @@
     "precision_macro": 0.783135,
     "recall_macro": 0.353590,
     "hamming_loss": 0.019925,
-    "train_time_sec": 15.88,
-    "inference_time_sec": 0.0435
+    "train_time_sec": 19.39,
+    "inference_time_sec": 0.0481
   },
   {
     "model": "BERT (bert-base-uncased)",

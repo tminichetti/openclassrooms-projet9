@@ -123,9 +123,9 @@ Objectif : demontrer qu'un modele NLP recent surpasse une baseline classique.
 
 | Modele | Type | ROC-AUC (macro) | F1 (macro) | Precision | Recall | Hamming Loss | Train (s) | Inference (s) |
 |--------|------|-----------------|------------|-----------|--------|--------------|-----------|---------------|
-| TF-IDF + Logistic Regression | Baseline | 0.9786 | 0.4667 | 0.7831 | 0.3536 | 0.0199 | 15.88 | 0.04 |
+| TF-IDF + Logistic Regression | Baseline | 0.9786 | 0.4666 | 0.7831 | 0.3536 | 0.0199 | 19.39 | 0.05 |
 | BERT (bert-base-uncased) | Baseline | 0.9878 | 0.6965 | 0.6767 | 0.7240 | 0.0153 | 2933 | 59.27 |
-| ModernBERT | Recent | **0.9911** | **0.6632** | 0.7081 | 0.6350 | 0.0153 | 4836 | 120.18 |
+| ModernBERT | Recent | **0.9914** | 0.6427 | 0.7410 | 0.5749 | 0.0157 | 5057 | 130.74 |
 
 ---
 

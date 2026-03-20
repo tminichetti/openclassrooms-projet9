@@ -1,12 +1,12 @@
 [
   {
     "model": "ModernBERT",
-    "roc_auc_macro": 0.9911,
-    "f1_macro": 0.6632,
-    "precision_macro": 0.7081,
-    "recall_macro": 0.6350,
-    "hamming_loss": 0.0153,
-    "train_time_sec": 4835.54,
-    "inference_time_sec": 120.1798
+    "roc_auc_macro": 0.991378,
+    "f1_macro": 0.642692,
+    "precision_macro": 0.741009,
+    "recall_macro": 0.574943,
+    "hamming_loss": 0.015684,
+    "train_time_sec": 5057.06,
+    "inference_time_sec": 130.7385
   }
 ]
