@@ -378,11 +378,7 @@ elif page == "Prediction":
 
             tfidf, model = load_tfidf_model()
             X = tfidf.transform([user_input])
-            raw_probs = model.predict_proba(X)
-            probs = np.array([
-                p[0][1] if hasattr(p[0], '__len__') else p[0]
-                for p in raw_probs
-            ])
+            probs = model.predict_proba(X)[0]
 
         else:
             from transformers import AutoTokenizer, AutoModelForSequenceClassification
